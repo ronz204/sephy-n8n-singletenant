@@ -3,22 +3,13 @@ services:
   postgres:
     container_name: postgres
     restart: unless-stopped
-    build:
-      dockerfile: Dockerfile
-      context: ./services/postgres
-    image: sephy-postgres:15-alpine
+    image: postgres:15-alpine
     networks:
       - infra-network
     env_file:
       - ./services/postgres/secrets/.env
     volumes:
       - postgres-data:/var/lib/postgresql/data
-    healthcheck:
-      test: ["CMD-SHELL", "/healthy.sh"]
-      start_period: 30s
-      interval: 1m30s
-      timeout: 30s
-      retries: 5
   
   n8n:
     container_name: n8n
@@ -34,7 +25,7 @@ services:
       - n8n-data:/home/node/.n8n
     depends_on:
       postgres:
-        condition: service_healthy
+        condition: service_started
     
 
 volumes:

@@ -1,2 +1,2 @@
 #!/bin/sh
-pg_isready -U n8n -d n8n
+pg_isready -U $POSTGRES_USER -d $POSTGRES_DB
